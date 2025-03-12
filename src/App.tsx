@@ -1,35 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Navbar from "./components/Navbar";
+import "@aws-amplify/ui-react/styles.css";
+import { Amplify } from "aws-amplify";
+import outputs from "../amplify_outputs.json";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import Marketplace from "./pages/EnergyMarketplace";
+import Footer from "./components/Footer";
+
+Amplify.configure(outputs);
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+        <Navbar /> {/* Navbar stays at the top with highest z-index */}
+        <div style={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/MarketPlace" element={<Marketplace />} />
+          </Routes>
+        </div>
+        <Footer /> {/* Footer stays at the bottom */}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+
+export default App;
